@@ -11,7 +11,7 @@ public class Eggy {
             current = sc.nextLine();
             if (!current.equals("list")) {
                 append(current);
-                System.out.println(String.format("\n%s\n%s\n%s", line, current, line));
+                System.out.println(String.format("\n%s\nadded: %s\n%s", line, current, line));
             } else {
                 System.out.println(getStringInList(list) + String.format("%s", line));
             }
@@ -28,7 +28,7 @@ public class Eggy {
     }
 
     public static String getStringInList(String[] list) {
-        String result = "";
+        String result = "Here are the tasks in your list:\n";
         for (int i = 0; i < count; i++) {
             result = result + String.format("%d. ", i + 1) + list[i] + "\n";
         }
