@@ -17,6 +17,7 @@ public class Eggy {
 
     public static void toString(Scanner sc) {
         String line = "____________________________________________________________";
+        String standard = "Got it. I've added this task:\n";
         while (!current.equals("bye")) {
             current = sc.nextLine();
             if (current.equals("list")) {
@@ -31,19 +32,44 @@ public class Eggy {
                 System.out.println("OK, I've marked this task as not done yet:\n");
                 handleMarkUnmark(current);
                 System.out.println("\n" + line);
+            } else if (current.startsWith("todo ")) {
+                String command = "todo";
+                Task re = append(current, command);
+                System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
+                        standard, re.toString(), count, line));
+            } else if (current.startsWith("deadline ")) {
+                String command = "deadline";
+                Task re = append(current, command);
+                System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
+                        standard, re.toString(), count, line));
+            } else if (current.startsWith("event ")) {
+                String command = "event";
+                Task re = append(current, command);
+                System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
+                        standard, re.toString(), count, line));
             } else {
-                Task re = append(current);
+                Task re = append(current, "todo");
                 System.out.println(String.format("\n%s\nadded: %s\n%s\n", line, re.toString(), line));
             }
         }
     }
 
-    public static Task append(String newElement) {
+    public static Task append(String newElement, String command) {
+        Task task;
         if (count < list.length) {
-            Task appended = new Task(newElement);
-            list[count] = appended;
+            if (command.equals("deadline")) {
+                task = new DeadlineTask(newElement);
+            } else if (command.equals("event")) {
+                task = new Event(newElement);
+            } else if (command.equals("todo")) {
+                task = new ToDo(newElement);
+            } else {
+                task = new Task(newElement);
+            }
+
+            list[count] = task;
             count++;
-            return appended;
+            return task;
         } else {
             System.out.println("Array is full, cannot append new element.");
             return new Task("");
