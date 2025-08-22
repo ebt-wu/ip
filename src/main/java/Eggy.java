@@ -15,9 +15,29 @@ public class Eggy {
         return task;
     }
 
+    public static Task deleteTask(int index) {
+        if (index < 0 || index >= count) {
+            System.out.println("Invalid index for deletion.");
+            return null;
+        }
+
+        Task removedTask = list[index];
+
+        for (int i = index; i < count - 1; i++) {
+            list[i] = list[i + 1];
+        }
+
+        list[count - 1] = null;
+
+        count--;
+
+        return removedTask;
+    }
+
     public static void toString(Scanner sc) throws Exception {
         String line = "____________________________________________________________";
         String standard = "Got it. I've added this task:\n";
+        String remove = "Noted. I've removed this task:\n";
         while (!current.equals("bye")) {
             current = sc.nextLine();
             try {
@@ -49,6 +69,12 @@ public class Eggy {
                     Task re = append(current, command);
                     System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
                             standard, re.toString(), count, line));
+                } else if (current.startsWith("delete ")) {
+                    String[] parts = current.split(" ");
+                    int index = Integer.parseInt(parts[1]) - 1;
+                    Task removed = deleteTask(index);
+                    System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
+                            remove, removed.toString(), count, line));
                 } else {
                     throw new Exception(line + "\nOOPS!!! I'm sorry, but I don't know what that means :-(\n" + line);
                 }
