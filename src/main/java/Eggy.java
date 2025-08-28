@@ -1,9 +1,23 @@
 import java.util.Scanner;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.io.IOException;
+import java.util.List;
+import java.util.ArrayList;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.nio.charset.StandardCharsets;
+import java.io.FileNotFoundException;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.StandardOpenOption;
 
 public class Eggy {
     public static int count = 0;
     public static Task[] list = new Task[100];
     public static String current = "";
+    private static final Path DATA_DIR = Paths.get(".", "data");
+    private static final Path DATA_FILE = DATA_DIR.resolve("eggy.txt");
 
     public static Task handleMarkUnmark(String command) {
         String[] parts = command.split(" ");
@@ -13,6 +27,11 @@ public class Eggy {
         task.changeMark();
         System.out.println("    " + task);
         return task;
+    }
+
+    public static String formattedString(String str) {
+        String line = "____________________________________________________________";
+        return String.format("%s\n%s\n%s\n", line, str, line);
     }
 
     public static Task deleteTask(int index) {
@@ -113,6 +132,7 @@ public class Eggy {
 
             list[count] = task;
             count++;
+            saveTasksToFile();
             return task;
         } else {
             System.out.println("Array is full, cannot append new element.");
@@ -129,7 +149,86 @@ public class Eggy {
         return result;
     }
 
+    public static void loadTasksFromFile() {
+        try {
+            Path dataDir = Paths.get(".", "data");
+            Path dataFile = dataDir.resolve("eggy.txt");
+
+            if (!Files.exists(dataDir)) {
+                Files.createDirectories(dataDir);
+            }
+            if (Files.exists(dataFile)) {
+                List<String> lines = Files.readAllLines(dataFile, StandardCharsets.UTF_8);
+                for (String line : lines) {
+                    if (line.trim().isEmpty())
+                        continue;
+
+                    String[] parts = line.split("\\|");
+                    String taskType = parts[0].trim();
+                    String doneFlag = parts[1].trim();
+                    String description = parts[2].trim();
+
+                    Task t = null;
+                    if (taskType.equals("T")) {
+                        t = new ToDo("todo " + description);
+                    } else if (taskType.equals("D")) {
+                        String deadline = (parts.length > 3) ? parts[3].trim() : "";
+                        t = new DeadlineTask("deadline " + description + " /by " + deadline);
+                    } else if (taskType.equals("E")) {
+                        String from = (parts.length > 3) ? parts[3].trim() : "";
+                        String to = (parts.length > 4) ? parts[4].trim() : "";
+                        t = new Event("event " + description + " /from " + from + " /to " + to);
+                    }
+
+                    if (t != null) {
+                        if (doneFlag.equals("1")) {
+                            t.changeMark();
+                        }
+                        list[count++] = t;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Failed to load tasks: " + e.getMessage());
+        }
+    }
+
+    public static void saveTasksToFile() {
+        try {
+            Path dataDir = Paths.get(".", "data");
+            Path dataFile = dataDir.resolve("eggy.txt");
+
+            if (!Files.exists(dataDir)) {
+                Files.createDirectories(dataDir);
+            }
+            List<String> lines = new ArrayList<>();
+
+            for (int i = 0; i < count; i++) {
+                Task t = list[i];
+                StringBuilder sb = new StringBuilder();
+
+                if (t instanceof ToDo) {
+                    sb.append("T | ").append(t.isDone ? "1" : "0").append(" | ").append(t.description);
+                } else if (t instanceof DeadlineTask) {
+                    DeadlineTask dt = (DeadlineTask) t;
+                    sb.append("D | ").append(dt.isDone ? "1" : "0").append(" | ")
+                            .append(dt.description).append(" | ").append(dt.deadline);
+                } else if (t instanceof Event) {
+                    Event ev = (Event) t;
+                    sb.append("E | ").append(ev.isDone ? "1" : "0").append(" | ")
+                            .append(ev.description).append(" | ").append(ev.fromTime).append(" | ").append(ev.toTime);
+                }
+                lines.add(sb.toString());
+            }
+            Files.write(dataFile, lines, StandardCharsets.UTF_8, StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        } catch (IOException e) {
+            System.err.println("Failed to save tasks: " + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
+        loadTasksFromFile();
         Scanner sc = new Scanner(System.in);
         String line = "____________________________________________________________";
         String formatted_string = String.format(
