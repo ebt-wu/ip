@@ -4,7 +4,7 @@ import java.time.format.DateTimeParseException;
 
 public class DeadlineTask extends Task {
     protected LocalDateTime deadline;
-    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ofPattern("d/M/yyyy HHmm");
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
     private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
     public DeadlineTask(String input) {

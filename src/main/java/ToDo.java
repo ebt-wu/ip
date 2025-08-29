@@ -6,7 +6,7 @@ public class ToDo extends Task {
             this.description = input.substring(command.length()).trim();
         } catch (Exception e) {
             String line = "____________________________________________________________";
-            System.out.println(line+"\nOOPS!!! I'm sorry, but I don't know what that means :-(\n"+line);
+            System.out.println(line + "\nOOPS!!! I'm sorry, but I don't know what that means :-(\n" + line);
         }
     }
 
