@@ -1,4 +1,5 @@
 package eggy.save;
+
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -14,11 +15,30 @@ import eggy.task.Task;
 import eggy.TaskList;
 import eggy.task.ToDo;
 
+/**
+ * Handles saving and loading of tasks to and from a persistent storage file.
+ * Provides methods to save a TaskList to a file and to load tasks from the file
+ * into a TaskList.
+ */
 public class Storage {
+
+    /**
+     * Constructs a Storage instance.
+     * Currently no setup is required on instantiation.
+     */
     public Storage() {
 
     }
 
+    /**
+     * Saves all tasks from the provided TaskList to a file named "eggy.txt" inside
+     * a "data" directory.
+     * The tasks are serialized in a specific format indicating their type and
+     * completion status.
+     * If the "data" directory or the data file does not exist, they are created.
+     *
+     * @param list The TaskList containing tasks to be saved.
+     */
     public void saveTasksToFile(TaskList list) {
         try {
             Path dataDir = Paths.get(".", "data");
@@ -42,7 +62,8 @@ public class Storage {
                 } else if (t instanceof Event) {
                     Event ev = (Event) t;
                     sb.append("E | ").append(ev.isDone ? "1" : "0").append(" | ")
-                            .append(ev.description).append(" | ").append(ev.getFromTime()).append(" | ").append(ev.getToTime());
+                            .append(ev.description).append(" | ").append(ev.getFromTime()).append(" | ")
+                            .append(ev.getToTime());
                 }
                 lines.add(sb.toString());
             }
@@ -53,6 +74,17 @@ public class Storage {
         }
     }
 
+    /**
+     * Loads tasks from the persistent file "eggy.txt" located in the "data"
+     * directory.
+     * Reads and parses each line, reconstructing Task objects of appropriate types
+     * with their done status.
+     * If the directory or file does not exist, they are created or an empty
+     * TaskList is returned.
+     *
+     * @return A TaskList populated with tasks loaded from the file. Returns an
+     *         empty list if the file is missing or empty.
+     */
     public TaskList loadTasksFromFile() {
         TaskList list = new TaskList(new ArrayList<Task>());
         try {

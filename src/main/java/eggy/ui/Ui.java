@@ -5,43 +5,100 @@ import eggy.save.Storage;
 import eggy.task.Task;
 import eggy.TaskList;
 
+
+/**
+ * Handles user interaction including reading input commands and displaying output messages.
+ * Manages the main input loop and commands processing for the Eggy chatbot application.
+ */
 public class Ui {
+    /**
+     * The TaskList maintained by the UI.
+    */
     private TaskList list;
+
+    /**
+     * Scanner for reading user input from the console.
+    */
     private final Scanner sc = new Scanner(System.in);
+
+    /**
+     * Storage instance for saving and loading tasks.
+    */
     private Storage storage;
+
+    /**
+     * Holds the current input line from the user.
+    */
     private String current = "";
 
+    /**
+     * Constructs the Ui with a TaskList and Storage instance.
+     * 
+     * @param list The TaskList to operate on.
+     * @param storage The Storage instance to use for persistent saving/loading.
+     */
     public Ui(TaskList list, Storage storage) {
         this.list = list;
         this.storage = storage;
     }
 
+    /**
+     * Reads a single line of command input from the user.
+     * 
+     * @return The user input string.
+     */
     public String readCommand() {
         return sc.nextLine();
     }
 
+    /**
+     * Displays a message to the user.
+     * 
+     * @param message The message to display.
+     */
     public void show(String message) {
         System.out.println(message);
     }
 
+    /**
+     * Displays an error message to the user.
+     * 
+     * @param message The error message to display.
+     */
     public void showError(String message) {
         System.out.println("Error: " + message);
     }
 
+    /**
+     * Displays a horizontal separator line.
+     */
     public void showLine() {
         System.out.println("____________________________________________________________");
     }
 
+    /**
+     * Displays a welcome message when the program starts.
+     */
     public void showWelcome() {
         showLine();
         show("Hello! I'm EGGY\nWhat can I do for you?");
         showLine();
     }
 
+    /**
+     * Displays a goodbye message when the program ends.
+     */
     public void showGoodbye() {
         show("Bye. Hope to see you again soon!");
     }
 
+    /**
+     * Main loop to handle user input commands continuously until "bye" is entered.
+     * Supports commands such as "list", "mark", "unmark", "todo", "deadline", "event", and "delete".
+     * Saves the task list to storage after each successful command.
+     * 
+     * @throws Exception if a command is unrecognized or input is invalid.
+     */
     public void stringHandler() throws Exception {
         String line = "____________________________________________________________";
         String standard = "Got it. I've added this task:\n";
@@ -99,6 +156,12 @@ public class Ui {
         }
     }
 
+    /**
+     * Returns a formatted string listing all tasks currently in the list.
+     * Each task is numbered and displayed with its string representation.
+     * 
+     * @return A string of all tasks formatted for display.
+     */
     public String getStringInList() {
         String result = "Here are the tasks in your list:\n";
         for (int i = 0; i < list.size(); i++) {
@@ -108,6 +171,12 @@ public class Ui {
         return result;
     }
 
+    /**
+     * Returns a string wrapped with horizontal lines above and below for formatting.
+     * 
+     * @param str The string to format.
+     * @return The formatted string.
+     */
     public String formattedString(String str) {
         String line = "____________________________________________________________";
         return String.format("%s\n%s\n%s\n", line, str, line);
