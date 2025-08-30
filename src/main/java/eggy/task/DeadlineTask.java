@@ -1,3 +1,4 @@
+package eggy.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,6 +12,7 @@ public class DeadlineTask extends Task {
         super("");
         parseDeadline(input);
     }
+
 
     private void parseDeadline(String input) {
         try {

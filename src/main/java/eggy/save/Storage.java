@@ -1,3 +1,4 @@
+package eggy.save;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,11 +8,15 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Storage {
-    private final Path dataFile;
+import eggy.task.DeadlineTask;
+import eggy.task.Event;
+import eggy.task.Task;
+import eggy.TaskList;
+import eggy.task.ToDo;
 
-    public Storage(String filePath) {
-        dataFile = Paths.get(filePath);
+public class Storage {
+    public Storage() {
+
     }
 
     public void saveTasksToFile(TaskList list) {
@@ -33,11 +38,11 @@ public class Storage {
                 } else if (t instanceof DeadlineTask) {
                     DeadlineTask dt = (DeadlineTask) t;
                     sb.append("D | ").append(dt.isDone ? "1" : "0").append(" | ")
-                            .append(dt.description).append(" | ").append(dt.deadline);
+                            .append(dt.description).append(" | ").append(dt.getDeadline());
                 } else if (t instanceof Event) {
                     Event ev = (Event) t;
                     sb.append("E | ").append(ev.isDone ? "1" : "0").append(" | ")
-                            .append(ev.description).append(" | ").append(ev.fromTime).append(" | ").append(ev.toTime);
+                            .append(ev.description).append(" | ").append(ev.getFromTime()).append(" | ").append(ev.getToTime());
                 }
                 lines.add(sb.toString());
             }
@@ -92,9 +97,5 @@ public class Storage {
             System.err.println("Failed to load tasks: " + e.getMessage());
         }
         return list;
-    }
-
-    public void save(ArrayList<Task> tasks) {
-        // similar to your saveTasksToFile logic but takes ArrayList<Task>
     }
 }

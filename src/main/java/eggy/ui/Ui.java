@@ -1,11 +1,15 @@
+package eggy.ui;
 import java.util.Scanner;
+
+import eggy.save.Storage;
+import eggy.task.Task;
+import eggy.TaskList;
 
 public class Ui {
     private TaskList list;
     private final Scanner sc = new Scanner(System.in);
     private Storage storage;
     private String current = "";
-    private int count = 0;
 
     public Ui(TaskList list, Storage storage) {
         this.list = list;

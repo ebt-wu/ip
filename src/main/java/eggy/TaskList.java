@@ -1,4 +1,10 @@
+package eggy;
 import java.util.ArrayList;
+
+import eggy.task.DeadlineTask;
+import eggy.task.Event;
+import eggy.task.Task;
+import eggy.task.ToDo;
 public class TaskList {
     private final ArrayList<Task> tasks;
 

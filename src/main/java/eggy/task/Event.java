@@ -1,3 +1,5 @@
+package eggy.task;
+
 public class Event extends Task {
     String fromTime;
     String toTime;
@@ -5,6 +7,14 @@ public class Event extends Task {
     public Event(String input) {
         super("");
         parseEvent(input);
+    }
+
+    public String getFromTime() {
+        return this.fromTime;
+    }
+
+    public String getToTime() {
+        return this.toTime;
     }
 
     public void parseEvent(String input) {
