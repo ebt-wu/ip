@@ -1,5 +1,7 @@
 package eggy.ui;
+
 import java.util.Scanner;
+import java.util.List;
 
 import eggy.save.Storage;
 import eggy.task.Task;
@@ -91,7 +93,22 @@ public class Ui {
     public void showGoodbye() {
         show("Bye. Hope to see you again soon!");
     }
-
+    
+    /**
+     * Returns a formatted string listing all tasks in the provided list.
+     * Each task is numbered and displayed with its string representation.
+     * 
+     * @param tasks The list of tasks to format.
+     * @return A string of all tasks formatted for display.
+     */
+    public String printTaskinList(List<Task> tasks) {
+        String result = "";
+        for (int i = 0; i < tasks.size(); i++) {
+            Task task = tasks.get(i);
+            result = result + String.format("%d. ", i + 1) + task + "\n";
+        }
+        return result;
+    }
     /**
      * Main loop to handle user input commands continuously until "bye" is entered.
      * Supports commands such as "list", "mark", "unmark", "todo", "deadline", "event", and "delete".
@@ -146,6 +163,13 @@ public class Ui {
                     Task removed = list.remove(index);
                     System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
                             remove, removed.toString(), count, line));
+                } else if (current.startsWith("find ")) {
+                    int index = 5;
+                    String keyword = current.substring(index);
+                    List<Task> l = list.findTasks(keyword);
+                    System.out.println(
+                            String.format("\n%s\n    Here are the matching tasks for your list:\n%s\n%s\n", line,
+                                    printTaskinList(l), line));
                 } else {
                     throw new Exception(line + "\nOOPS!!! I'm sorry, but I don't know what that means :-(\n" + line);
                 }

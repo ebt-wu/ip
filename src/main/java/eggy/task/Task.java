@@ -32,6 +32,10 @@ public class Task {
         return (isDone ? "X" : " ");
     }
 
+    public String getDescription() {
+        return description;
+    }
+    
     /** Toggles the completion status of the task. */
     public void changeMark() {
         isDone = !isDone;
