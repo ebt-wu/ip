@@ -93,8 +93,4 @@ public class Storage {
         }
         return list;
     }
-
-    public void save(ArrayList<Task> tasks) {
-        // similar to your saveTasksToFile logic but takes ArrayList<Task>
-    }
 }
