@@ -1,0 +1,131 @@
+[33mcommit c09e55b442770b11384bec62711e205b1fd520d8[m[33m ([m[1;33mtag: [m[1;33mLevel-6[m[33m)[m
+Author: ebt-wu <edbertwu08@gmail.com>
+Date:   Fri Aug 22 05:14:47 2025 +0800
+
+    Level-5
+
+[1mdiff --git a/src/main/java/Duke.java b/src/main/java/Duke.java[m
+[1mdeleted file mode 100644[m
+[1mindex 5d31333..0000000[m
+[1m--- a/src/main/java/Duke.java[m
+[1m+++ /dev/null[m
+[36m@@ -1,10 +0,0 @@[m
+[31m-public class Duke {[m
+[31m-    public static void main(String[] args) {[m
+[31m-        String logo = " ____        _        \n"[m
+[31m-                + "|  _ \\ _   _| | _____ \n"[m
+[31m-                + "| | | | | | | |/ / _ \\\n"[m
+[31m-                + "| |_| | |_| |   <  __/\n"[m
+[31m-                + "|____/ \\__,_|_|\\_\\___|\n";[m
+[31m-        System.out.println("Hello from\n" + logo);[m
+[31m-    }[m
+[31m-}[m
+[1mdiff --git a/src/main/java/Eggy.java b/src/main/java/Eggy.java[m
+[1mindex 85169bd..f7a55d3 100644[m
+[1m--- a/src/main/java/Eggy.java[m
+[1m+++ b/src/main/java/Eggy.java[m
+[36m@@ -15,56 +15,74 @@[m [mpublic class Eggy {[m
+         return task;[m
+     }[m
+ [m
+[31m-    public static void toString(Scanner sc) {[m
+[32m+[m[32m    public static void toString(Scanner sc) throws Exception {[m
+         String line = "____________________________________________________________";[m
+         String standard = "Got it. I've added this task:\n";[m
+         while (!current.equals("bye")) {[m
+             current = sc.nextLine();[m
+[31m-            if (current.equals("list")) {[m
+[31m-                System.out.println(getStringInList(list) + String.format("%s", line));[m
+[31m-            } else if (current.startsWith("mark ")) {[m
+[31m-                System.out.println("\n" + line);[m
+[31m-                System.out.println("Nice! I've marked this task as done:\n");[m
+[31m-                handleMarkUnmark(current);[m
+[31m-                System.out.println("\n" + line);[m
+[31m-            } else if (current.startsWith("unmark ")) {[m
+[31m-                System.out.println("\n" + line);[m
+[31m-                System.out.println("OK, I've marked this task as not done yet:\n");[m
+[31m-                handleMarkUnmark(current);[m
+[31m-                System.out.println("\n" + line);[m
+[31m-            } else if (current.startsWith("todo ")) {[m
+[31m-                String command = "todo";[m
+[31m-                Task re = append(current, command);[m
+[31m-                System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,[m
+[31m-                        standard, re.toString(), count, line));[m
+[31m-            } else if (current.startsWith("deadline ")) {[m
+[31m-                String command = "deadline";[m
+[31m-                Task re = append(current, command);[m
+[31m-                System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,[m
+[31m-                        standard, re.toString(), count, line));[m
+[31m-            } else if (current.startsWith("event ")) {[m
+[31m-                String command = "event";[m
+[31m-                Task re = append(current, command);[m
+[31m-                System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,[m
+[31m-                        standard, re.toString(), count, line));[m
+[31m-            } else {[m
+[31m-                Task re = append(current, "todo");[m
+[31m-                System.out.println(String.format("\n%s\nadded: %s\n%s\n", line, re.toString(), line));[m
+[32m+[m[32m            try {[m
+[32m+[m[32m                if (current.equals("list")) {[m
+[32m+[m[32m                    System.out.println(getStringInList(list) + String.format("%s", line));[m
+[32m+[m[32m                } else if (current.startsWith("mark ")) {[m
+[32m+[m[32m                    System.out.println("\n" + line);[m
+[32m+[m[32m                    System.out.println("Nice! I've marked this task as done:\n");[m
+[32m+[m[32m                    handleMarkUnmark(current);[m
+[32m+[m[32m                    System.out.println("\n" + line);[m
+[32m+[m[32m                } else if (current.startsWith("unmark ")) {[m
+[32m+[m[32m                    System.out.println("\n" + line);[m
+[32m+[m[32m                    System.out.println("OK, I've marked this task as not done yet:\n");[m
+[32m+[m[32m                    handleMarkUnmark(current);[m
+[32m+[m[32m                    System.out.println("\n" + line);[m
+[32m+[m[32m                } else if (current.startsWith("todo ")) {[m
+[32m+[m[32m                    String command = "todo";[m
+[32m+[m[32m                    Task re = append(current, command);[m
+[32m+[m[32m                    System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,[m
+[32m+[m[32m                            standard, re.toString(), count, line));[m
+[32m+[m
+[32m+[m[32m                } else if (current.startsWith("deadline ")) {[m
+[32m+[m[32m                    String command = "deadline";[m
+[32m+[m[32m                    Task re = append(current, command);[m
+[32m+[m[32m                    System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,[m
+[32m+[m[32m                            standard, re.toString(), count, line));[m
+[32m+[m[32m                } else if (current.startsWith("event ")) {[m
+[32m+[m[32m                    String command = "event";[m
+[32m+[m[32m                    Task re = append(current, command);[m
+[32m+[m[32m                    System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,[m
+[32m+[m[32m                            standard, re.toString(), count, line));[m
+[32m+[m[32m                } else {[m
+[32m+[m[32m                    throw new Exception(line + "\nOOPS!!! I'm sorry, but I don't know what that means :-(\n" + line);[m
+[32m+[m[32m                }[m
+[32m+[m[32m            } catch (Exception e) {[m
+[32m+[m[32m                System.out.println(e.getMessage());[m
+             }[m
+         }[m
+     }[m
+ [m
+[31m-    public static Task append(String newElement, String command) {[m
+[32m+[m[32m    public static Task append(String newElement, String command) throws Exception {[m
+[32m+[m[32m        String line = "____________________________________________________________";[m
+         Task task;[m
+         if (count < list.length) {[m
+             if (command.equals("deadline")) {[m
+[32m+[m[32m                if (!newElement.contains("/by")) {[m
+[32m+[m[32m                    throw new Exception([m
+[32m+[m[32m                            line + "\nOOPS!!! I'm sorry, please provide a deadline or write in proper format\n" + line);[m
+[32m+[m[32m                }[m
+                 task = new DeadlineTask(newElement);[m
+             } else if (command.equals("event")) {[m
+[32m+[m[32m                if (!newElement.contains("/from") || !newElement.contains("/to")) {[m
+[32m+[m[32m                    throw new Exception([m
+[32m+[m[32m                            line + "\nOOPS!!! I'm sorry, please provide both the start and the end timings or write in proper format\n"[m
+[32m+[m[32m                                    + line);[m
+[32m+[m[32m                }[m
+                 task = new Event(newElement);[m
+             } else if (command.equals("todo")) {[m
+[32m+[m[32m                String description = newElement.substring("todo ".length()).trim();[m
+[32m+[m[32m                if (description.isEmpty()) {[m
+[32m+[m[32m                    throw new Exception(line + "\nOOPS!!! The description of a todo cannot be empty.\n" + line);[m
+[32m+[m[32m                }[m
+                 task = new ToDo(newElement);[m
+             } else {[m
+[31m-                task = new Task(newElement);[m
+[32m+[m[32m                throw new Exception(line + "\nOOPS!!! I'm sorry, but I don't know what that means :-(\n" + li
