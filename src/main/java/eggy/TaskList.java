@@ -1,5 +1,6 @@
 package eggy;
 import java.util.ArrayList;
+import java.util.List;
 
 import eggy.task.DeadlineTask;
 import eggy.task.Event;
@@ -69,4 +70,16 @@ public class TaskList {
         System.out.println("    " + task);
         return task;
     }
+
+    public List<Task> findTasks(String keyword) {
+        List<Task> foundTasks = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().contains(keyword)) {
+                foundTasks.add(task);
+            }
+        }
+        return foundTasks;
+    }
+
 }
+
