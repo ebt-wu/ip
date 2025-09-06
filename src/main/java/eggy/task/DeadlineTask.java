@@ -9,6 +9,15 @@ import java.time.format.DateTimeParseException;
  * A DeadlineTask includes a description and a deadline date/time.
  */
 public class DeadlineTask extends Task {
+    /**
+     * Formatter for parsing input date/time in ISO_LOCAL_DATE_TIME format.
+     */
+    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
+    /**
+     * Formatter for outputting date/time in a readable format like "MMM dd yyyy,
+     * h:mm a".
+     */
+    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
 
     /**
      * The deadline date and time of this task.
@@ -16,23 +25,11 @@ public class DeadlineTask extends Task {
     protected LocalDateTime deadline;
 
     /**
-     * Formatter for parsing input date/time in ISO_LOCAL_DATE_TIME format.
-     */
-    private static final DateTimeFormatter INPUT_FORMAT = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
-    /**
-     * 
-     * Formatter for outputting date/time in a readable format like "MMM dd yyyy,
-     * h:mm a".
-     */
-    private static final DateTimeFormatter OUTPUT_FORMAT = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
-
-    /**
      * Constructs a DeadlineTask by parsing the input string to extract the
      * description and deadline.
-     * 
+     *
      * @param input The input string containing the task type, description, and
      *              deadline in the format:
-     *              "deadline <description> /by <ISO_LOCAL_DATE_TIME>"
      */
     public DeadlineTask(String input) {
         super("");
@@ -43,8 +40,8 @@ public class DeadlineTask extends Task {
      * Parses the input string to set the description and deadline fields.
      * If the date/time cannot be parsed, the deadline is set to null and an error
      * message is printed.
-     * 
-     * @param input The input string to parse.
+     *
+     * @param input The input string to parse
      */
     private void parseDeadline(String input) {
         try {
@@ -64,8 +61,8 @@ public class DeadlineTask extends Task {
      * Returns a string representation of this DeadlineTask, including its mark
      * status and formatted deadline.
      * If the deadline is invalid or not set, "Invalid date" is shown.
-     * 
-     * @return A string representation of the task.
+     *
+     * @return A string representation of the task
      */
     @Override
     public String toString() {
@@ -75,7 +72,7 @@ public class DeadlineTask extends Task {
 
     /**
      * Retrieves the deadline of this task.
-     * 
+     *
      * @return The LocalDateTime representing the deadline, or null if invalid or
      *         not set.
      */

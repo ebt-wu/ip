@@ -18,6 +18,9 @@ public class Ui {
     */
     private TaskList list;
 
+
+    private int count;
+    
     /**
      * Scanner for reading user input from the console.
     */
@@ -42,6 +45,7 @@ public class Ui {
     public Ui(TaskList list, Storage storage) {
         this.list = list;
         this.storage = storage;
+        this.count = list.size();
     }
 
     /**
@@ -180,6 +184,71 @@ public class Ui {
         }
     }
 
+    public String getResponse(String input) throws Exception {
+        String line = "____________________________________________________________";
+        String standard = "Got it. I've added this task:\n";
+        String remove = "Noted. I've removed this task:\n";
+        String res = "";
+       
+        current = input;
+        showLine();
+        try {
+            if (current.equals("list")) {
+                res = getStringInList() + String.format("%s", line);
+            } else if (current.startsWith("mark ")) {
+                res = res + ("\n" + line);
+                res = res + ("Nice! I've marked this task as done:\n");
+                list.handleMarkUnmark(current);
+                res = res + ("\n" + line);
+            } else if (current.startsWith("unmark ")) {
+                res = res + ("\n" + line);
+                res = res + ("OK, I've marked this task as not done yet:\n");
+                list.handleMarkUnmark(current);
+                res = res + "\n" + line;
+            } else if (current.startsWith("todo ")) {
+                count++;
+                String command = "todo";
+                Task re = list.append(current, command);
+                res = res + (String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
+                        standard, re.toString(), count, line));
+
+            } else if (current.startsWith("deadline ")) {
+                count++;
+                String command = "deadline";
+                Task re = list.append(current, command);
+                res = res + (String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
+                        standard, re.toString(), count, line));
+            } else if (current.startsWith("event ")) {
+                count++;
+                String command = "event";
+                Task re = list.append(current, command);
+                res = res + (String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
+                        standard, re.toString(), count, line));
+            } else if (current.startsWith("delete ")) {
+                count--;
+                String[] parts = current.split(" ");
+                int index = Integer.parseInt(parts[1]) - 1;
+                Task removed = list.remove(index);
+                res = res + (String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
+                        remove, removed.toString(), count, line));
+            } else if (current.startsWith("find ")) {
+                int index = 5;
+                String keyword = current.substring(index);
+                List<Task> l = list.findTasks(keyword);
+                res = res + (
+                        String.format("\n%s\n    Here are the matching tasks for your list:\n%s\n%s\n", line,
+                                printTaskinList(l), line));
+            } else {
+                throw new Exception(line + "\nOOPS!!! I'm sorry, but I don't know what that means :-(\n" + line);
+            }
+            storage.saveTasksToFile(list);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            res = e.getMessage();
+        }
+        
+        return res;
+    }
     /**
      * Returns a formatted string listing all tasks currently in the list.
      * Each task is numbered and displayed with its string representation.

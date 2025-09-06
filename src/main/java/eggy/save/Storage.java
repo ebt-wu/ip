@@ -3,16 +3,16 @@ package eggy.save;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.io.IOException;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import eggy.TaskList;
 import eggy.task.DeadlineTask;
 import eggy.task.Event;
 import eggy.task.Task;
-import eggy.TaskList;
 import eggy.task.ToDo;
 
 /**
@@ -97,9 +97,9 @@ public class Storage {
             if (Files.exists(dataFile)) {
                 List<String> lines = Files.readAllLines(dataFile, StandardCharsets.UTF_8);
                 for (String line : lines) {
-                    if (line.trim().isEmpty())
+                    if (line.trim().isEmpty()) {
                         continue;
-
+                    }
                     String[] parts = line.split("\\|");
                     String taskType = parts[0].trim();
                     String doneFlag = parts[1].trim();
