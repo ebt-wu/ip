@@ -40,7 +40,7 @@ public class Storage {
      * @param list The TaskList containing tasks to be saved.
      */
     public void saveTasksToFile(TaskList list) {
-        assert list != null :
+        assert list != null : "TaskList should not be null";
         try {
             Path dataDir = Paths.get(".", "data");
             Path dataFile = dataDir.resolve("eggy.txt");
@@ -94,7 +94,7 @@ public class Storage {
 
             if (!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
-                assert Files.exists(dataDir)
+                assert Files.exists(dataDir);
             }
             if (Files.exists(dataFile)) {
                 List<String> lines = Files.readAllLines(dataFile, StandardCharsets.UTF_8);

@@ -58,6 +58,15 @@ public class DeadlineTask extends Task {
     }
 
     /**
+     * Returns the deadline of this task.
+     *
+     * @return The LocalDateTime representing the deadline
+     */
+    public LocalDateTime getBy() {
+        return this.deadline;
+    }
+
+    /**
      * Returns a string representation of this DeadlineTask, including its mark
      * status and formatted deadline.
      * If the deadline is invalid or not set, "Invalid date" is shown.

@@ -1,4 +1,6 @@
 package eggy;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,8 +13,8 @@ import eggy.task.ToDo;
  * Represents a list of tasks.
  */
 public class TaskList {
-    /* 
-    The actual list of tasks
+    /*
+     * The actual list of tasks
      */
     private final ArrayList<Task> tasks;
 
@@ -25,47 +27,54 @@ public class TaskList {
 
     /**
      * Adds task into the list of tasks.
+     * 
      * @param t Task to be added
      */
-    public void add(Task t) { 
-        tasks.add(t); 
+    public void add(Task t) {
+        tasks.add(t);
     }
 
     /**
      * Gets the task at index i.
+     * 
      * @param i Index of the task to be retrieved
      * @return Task at index i
      */
-    public Task get(int i) { 
-        return tasks.get(i); 
+    public Task get(int i) {
+        return tasks.get(i);
     }
 
     /**
      * Returns the number of tasks in the list.
+     * 
      * @return Number of tasks in the list
      */
-    public int size() { 
-        return tasks.size(); 
+    public int size() {
+        return tasks.size();
     }
 
     /**
      * Removes the task at index i from the list.
+     * 
      * @param i Index of the task to be removed
      * @return The removed task
      */
-    public Task remove(int i) { 
-        return tasks.remove(i); 
+    public Task remove(int i) {
+        return tasks.remove(i);
     }
 
     /**
      * Appends a new task to the list based on the command and its details.
      * Supports "deadline", "event", and "todo" commands.
-     * Throws an exception if the command is unrecognized or if required details are missing.
+     * Throws an exception if the command is unrecognized or if required details are
+     * missing.
      *
      * @param newElement The full command string containing task details.
-     * @param command The type of task to be added ("deadline", "event", or "todo").
+     * @param command    The type of task to be added ("deadline", "event", or
+     *                   "todo").
      * @return The newly added Task.
-     * @throws Exception If the command is unrecognized or if required details are missing.
+     * @throws Exception If the command is unrecognized or if required details are
+     *                   missing.
      */
     public Task append(String newElement, String command) throws Exception {
         String line = "____________________________________________________________";
@@ -95,8 +104,9 @@ public class TaskList {
         }
 
         tasks.add(task);
+        sortByDeadline();
         return task;
-    
+
     }
 
     /**
@@ -106,7 +116,7 @@ public class TaskList {
      *
      * @param command The command string indicating the action and task index.
      * @return The Task that was marked or unmarked.
-     * @throws NumberFormatException If the index is not a valid integer.
+     * @throws NumberFormatException     If the index is not a valid integer.
      * @throws IndexOutOfBoundsException If the index is out of range.
      */
     public Task handleMarkUnmark(String command) {
@@ -129,5 +139,30 @@ public class TaskList {
         return foundTasks;
     }
 
-}
+    public void sortByDeadline() {
+        tasks.sort((task1, task2) -> {
+            if (task1 instanceof DeadlineTask && task2 instanceof DeadlineTask) {
+                LocalDateTime deadline1 = ((DeadlineTask) task1).getBy();
+                LocalDateTime deadline2 = ((DeadlineTask) task2).getBy();
 
+                // Handle null deadlines - put them at the end
+                if (deadline1 == null && deadline2 == null) {
+                    return 0; // Both null, maintain order
+                } else if (deadline1 == null) {
+                    return 1; // task1 (null) comes after task2 (valid)
+                } else if (deadline2 == null) {
+                    return -1; // task1 (valid) comes before task2 (null)
+                } else {
+                    return deadline1.compareTo(deadline2); // Both valid, compare normally
+                }
+            } else if (task1 instanceof DeadlineTask) {
+                return -1; // Deadline tasks come before non-deadline tasks
+            } else if (task2 instanceof DeadlineTask) {
+                return 1; // Non-deadline tasks come after deadline tasks
+            } else {
+                return 0; // Both are non-deadline tasks, maintain their order
+            }
+        });
+    }
+
+}
