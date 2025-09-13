@@ -40,6 +40,7 @@ public class Storage {
      * @param list The TaskList containing tasks to be saved.
      */
     public void saveTasksToFile(TaskList list) {
+        assert list != null :
         try {
             Path dataDir = Paths.get(".", "data");
             Path dataFile = dataDir.resolve("eggy.txt");
@@ -93,6 +94,7 @@ public class Storage {
 
             if (!Files.exists(dataDir)) {
                 Files.createDirectories(dataDir);
+                assert Files.exists(dataDir)
             }
             if (Files.exists(dataFile)) {
                 List<String> lines = Files.readAllLines(dataFile, StandardCharsets.UTF_8);
@@ -115,6 +117,9 @@ public class Storage {
                         String from = (parts.length > 3) ? parts[3].trim() : "";
                         String to = (parts.length > 4) ? parts[4].trim() : "";
                         t = new Event("event " + description + " /from " + from + " /to " + to);
+                    } else {
+                        // Document assumption: should never reach here with valid data
+                        assert false : "Unknown task type: " + taskType;
                     }
 
                     if (t != null) {
