@@ -44,6 +44,7 @@ public class TaskList {
         return tasks.get(i);
     }
 
+
     /**
      * Returns the number of tasks in the list.
      * 
@@ -138,6 +139,17 @@ public class TaskList {
         }
         return foundTasks;
     }
+
+    /**
+     * Returns a formatted string representation of the task list.
+     * Each task is prefixed with its index (1-based).
+     *
+     * @return A formatted string of all tasks in the list.
+     */
+    public List<Task> getAll() {
+        return tasks; // assuming 'tasks' is your internal List<Task>
+    }
+
 
     public void sortByDeadline() {
         tasks.sort((task1, task2) -> {
