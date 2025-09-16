@@ -3,7 +3,8 @@ package eggy.task;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-
+// Deadline input format: deadline dothis /by 2023-10-15T18:00
+// Deadline output format: Oct 15 2023, 6:00 PM
 /**
  * Represents a Deadline task which extends the generic Task class.
  * A DeadlineTask includes a description and a deadline date/time.

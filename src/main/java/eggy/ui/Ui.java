@@ -7,271 +7,150 @@ import eggy.save.Storage;
 import eggy.task.Task;
 import eggy.TaskList;
 
-
 /**
- * Handles user interaction including reading input commands and displaying output messages.
- * Manages the main input loop and commands processing for the Eggy chatbot application.
+ * Handles user interaction, reads input commands, and displays output messages.
+ * Manages the input loop and command processing for the Eggy chatbot.
  */
 public class Ui {
-    /**
-     * The TaskList maintained by the UI.
-    */
-    private TaskList list;
+    // Constants for formatting output
+    private static final String LINE = "____________________________________________________________";
+    private static final String WELCOME_MSG = "Hello! I'm EGGY\nWhat can I do for you?";
+    private static final String GOODBYE_MSG = "Bye. Hope to see you again soon!";
+    private static final String ADD_TASK_MSG = "Got it. I've added this task:\n";
+    private static final String REMOVE_TASK_MSG = "Noted. I've removed this task:\n";
+    private static final String ERROR_PREFIX = "Error: ";
 
-
-    private int count;
-    
-    /**
-     * Scanner for reading user input from the console.
-    */
-    private final Scanner sc = new Scanner(System.in);
-
-    /**
-     * Storage instance for saving and loading tasks.
-    */
-    private Storage storage;
+    private final Scanner scanner = new Scanner(System.in);
+    private final Storage storage;
+    private final TaskList taskList;
 
     /**
-     * Holds the current input line from the user.
-    */
-    private String current = "";
-
-    /**
-     * Constructs the Ui with a TaskList and Storage instance.
-     * 
-     * @param list The TaskList to operate on.
-     * @param storage The Storage instance to use for persistent saving/loading.
+     * Constructs the Ui.
+     * @param taskList the TaskList to operate on
+     * @param storage the Storage instance for persistent saving/loading
      */
-    public Ui(TaskList list, Storage storage) {
-        this.list = list;
+    public Ui(TaskList taskList, Storage storage) {
+        this.taskList = taskList;
         this.storage = storage;
-        this.count = list.size();
     }
 
-    /**
-     * Reads a single line of command input from the user.
-     * 
-     * @return The user input string.
-     */
+    /** Reads a single line of user input. */
     public String readCommand() {
-        return sc.nextLine();
+        return scanner.nextLine();
     }
 
-    /**
-     * Displays a message to the user.
-     * 
-     * @param message The message to display.
-     */
+    /** Displays a message to the user. */
     public void show(String message) {
         System.out.println(message);
     }
 
-    /**
-     * Displays an error message to the user.
-     * 
-     * @param message The error message to display.
-     */
+    /** Displays an error message to the user. */
     public void showError(String message) {
-        System.out.println("Error: " + message);
+        System.out.println(ERROR_PREFIX + message);
     }
 
-    /**
-     * Displays a horizontal separator line.
-     */
+    /** Displays a horizontal separator line. */
     public void showLine() {
-        System.out.println("____________________________________________________________");
+        System.out.println(LINE);
     }
 
-    /**
-     * Displays a welcome message when the program starts.
-     */
+    /** Displays the welcome message. */
     public void showWelcome() {
         showLine();
-        show("Hello! I'm EGGY\nWhat can I do for you?");
+        show(WELCOME_MSG);
         showLine();
     }
 
-    /**
-     * Displays a goodbye message when the program ends.
-     */
+    /** Displays the goodbye message. */
     public void showGoodbye() {
-        show("Bye. Hope to see you again soon!");
+        show(GOODBYE_MSG);
     }
-    
-    /**
-     * Returns a formatted string listing all tasks in the provided list.
-     * Each task is numbered and displayed with its string representation.
-     * 
-     * @param tasks The list of tasks to format.
-     * @return A string of all tasks formatted for display.
-     */
-    public String printTaskinList(List<Task> tasks) {
-        String result = "";
+
+    /** Returns a formatted string of all tasks in the given list. */
+    public String formatTaskList(List<Task> tasks) {
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i < tasks.size(); i++) {
-            Task task = tasks.get(i);
-            result = result + String.format("%d. ", i + 1) + task + "\n";
+            result.append(String.format("%d. %s%n", i + 1, tasks.get(i)));
         }
-        return result;
+        return result.toString();
     }
-    /**
-     * Main loop to handle user input commands continuously until "bye" is entered.
-     * Supports commands such as "list", "mark", "unmark", "todo", "deadline", "event", and "delete".
-     * Saves the task list to storage after each successful command.
-     * 
-     * @throws Exception if a command is unrecognized or input is invalid.
-     */
-    public void stringHandler() throws Exception {
-        String line = "____________________________________________________________";
-        String standard = "Got it. I've added this task:\n";
-        String remove = "Noted. I've removed this task:\n";
-        int count = list.size();
-        while (!current.equals("bye")) {
-            current = sc.nextLine();
+
+    /** Returns a formatted string of all current tasks. */
+    public String getFormattedTaskList() {
+        return "Here are the tasks in your list:\n" + formatTaskList(taskList.getAll());
+    }
+
+    /** Main command handler loop until "bye" is entered. */
+    public void startCommandLoop() {
+        showWelcome();
+        String input;
+        while (!(input = readCommand()).equals("bye")) {
             showLine();
             try {
-                if (current.equals("list")) {
-                    System.out.println(getStringInList() + String.format("%s", line));
-                } else if (current.startsWith("mark ")) {
-                    System.out.println("\n" + line);
-                    System.out.println("Nice! I've marked this task as done:\n");
-                    list.handleMarkUnmark(current);
-                    System.out.println("\n" + line);
-                } else if (current.startsWith("unmark ")) {
-                    System.out.println("\n" + line);
-                    System.out.println("OK, I've marked this task as not done yet:\n");
-                    list.handleMarkUnmark(current);
-                    System.out.println("\n" + line);
-                } else if (current.startsWith("todo ")) {
-                    count++;
-                    String command = "todo";
-                    Task re = list.append(current, command);
-                    System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
-                            standard, re.toString(), count, line));
-
-                } else if (current.startsWith("deadline ")) {
-                    count++;
-                    String command = "deadline";
-                    Task re = list.append(current, command);
-                    System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
-                            standard, re.toString(), count, line));
-                } else if (current.startsWith("event ")) {
-                    count++;
-                    String command = "event";
-                    Task re = list.append(current, command);
-                    System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
-                            standard, re.toString(), count, line));
-                } else if (current.startsWith("delete ")) {
-                    count--;
-                    String[] parts = current.split(" ");
-                    int index = Integer.parseInt(parts[1]) - 1;
-                    Task removed = list.remove(index);
-                    System.out.println(String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
-                            remove, removed.toString(), count, line));
-                } else if (current.startsWith("find ")) {
-                    int index = 5;
-                    String keyword = current.substring(index);
-                    List<Task> l = list.findTasks(keyword);
-                    System.out.println(
-                            String.format("\n%s\n    Here are the matching tasks for your list:\n%s\n%s\n", line,
-                                    printTaskinList(l), line));
-                } else {
-                    throw new Exception(line + "\nOOPS!!! I'm sorry, but I don't know what that means :-(\n" + line);
-                }
-                storage.saveTasksToFile(list);
+                String output = handleCommand(input);
+                show(output);
             } catch (Exception e) {
-                System.out.println(e.getMessage());
+                showError(e.getMessage());
+            } finally {
+                showLine();
             }
+            storage.saveTasksToFile(taskList);
+        }
+        showGoodbye();
+    }
+
+    /**
+     * Processes a single user command and returns the corresponding message.
+     * @param input the user command
+     * @return the display message
+     * @throws Exception for invalid commands
+     */
+    public String handleCommand(String input) throws Exception {
+        if (input.equals("list")) {
+            return getFormattedTaskList();
+        } else if (input.startsWith("mark ") || input.startsWith("unmark ")) {
+            boolean isMark = input.startsWith("mark ");
+            taskList.handleMarkUnmark(input);
+            return isMark
+                ? "Nice! I've marked this task as done:\n" + getFormattedTaskList()
+                : "OK, I've marked this task as not done yet:\n" + getFormattedTaskList();
+        } else if (input.startsWith("todo ")) {
+            Task added = taskList.append(input, "todo");
+            return ADD_TASK_MSG + "    " + added + "\nNow you have " + taskList.size() + " tasks in the list";
+        } else if (input.startsWith("deadline ")) {
+            Task added = taskList.append(input, "deadline");
+            return ADD_TASK_MSG + "    " + added + "\nNow you have " + taskList.size() + " tasks in the list";
+        } else if (input.startsWith("event ")) {
+            Task added = taskList.append(input, "event");
+            return ADD_TASK_MSG + "    " + added + "\nNow you have " + taskList.size() + " tasks in the list";
+        } else if (input.startsWith("delete ")) {
+            String[] parts = input.split(" ");
+            int index = Integer.parseInt(parts[1]) - 1;
+            Task removed = taskList.remove(index);
+            return REMOVE_TASK_MSG + "    " + removed + "\nNow you have " + taskList.size() + " tasks in the list";
+        } else if (input.startsWith("find ")) {
+            String keyword = input.substring(5);
+            List<Task> found = taskList.findTasks(keyword);
+            return "Here are the matching tasks in your list:\n" + formatTaskList(found);
+        } else {
+            throw new Exception("OOPS!!! I'm sorry, but I don't know what that means :-(");
         }
     }
 
+    /**
+     * Processes a single user command and returns the corresponding message.
+     * This method is designed for integration with GUI applications.
+     * @param input the user command
+     * @return the display message
+     * @throws Exception for invalid commands
+     */
     public String getResponse(String input) throws Exception {
-        String line = "____________________________________________________________";
-        String standard = "Got it. I've added this task:\n";
-        String remove = "Noted. I've removed this task:\n";
-        String res = "";
-       
-        current = input;
-        showLine();
-        try {
-            if (current.equals("list")) {
-                res = getStringInList() + String.format("%s", line);
-            } else if (current.startsWith("mark ")) {
-                res = res + ("\n" + line);
-                res = res + ("Nice! I've marked this task as done:\n");
-                list.handleMarkUnmark(current);
-                res = res + ("\n" + line);
-            } else if (current.startsWith("unmark ")) {
-                res = res + ("\n" + line);
-                res = res + ("OK, I've marked this task as not done yet:\n");
-                list.handleMarkUnmark(current);
-                res = res + "\n" + line;
-            } else if (current.startsWith("todo ")) {
-                count++;
-                String command = "todo";
-                Task re = list.append(current, command);
-                res = res + (String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
-                        standard, re.toString(), count, line));
-
-            } else if (current.startsWith("deadline ")) {
-                count++;
-                String command = "deadline";
-                Task re = list.append(current, command);
-                res = res + (String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
-                        standard, re.toString(), count, line));
-            } else if (current.startsWith("event ")) {
-                count++;
-                String command = "event";
-                Task re = list.append(current, command);
-                res = res + (String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
-                        standard, re.toString(), count, line));
-            } else if (current.startsWith("delete ")) {
-                count--;
-                String[] parts = current.split(" ");
-                int index = Integer.parseInt(parts[1]) - 1;
-                Task removed = list.remove(index);
-                res = res + (String.format("\n%s\n%s\n    %s\nNow you have %s tasks in the list\n%s\n", line,
-                        remove, removed.toString(), count, line));
-            } else if (current.startsWith("find ")) {
-                int index = 5;
-                String keyword = current.substring(index);
-                List<Task> l = list.findTasks(keyword);
-                res = res + (
-                        String.format("\n%s\n    Here are the matching tasks for your list:\n%s\n%s\n", line,
-                                printTaskinList(l), line));
-            } else {
-                throw new Exception(line + "\nOOPS!!! I'm sorry, but I don't know what that means :-(\n" + line);
-            }
-            storage.saveTasksToFile(list);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            res = e.getMessage();
-        }
-        
-        return res;
-    }
-    /**
-     * Returns a formatted string listing all tasks currently in the list.
-     * Each task is numbered and displayed with its string representation.
-     * 
-     * @return A string of all tasks formatted for display.
-     */
-    public String getStringInList() {
-        String result = "Here are the tasks in your list:\n";
-        for (int i = 0; i < list.size(); i++) {
-            Task task = list.get(i);
-            result = result + String.format("%d. ", i + 1) + task + "\n";
-        }
-        return result;
+        return handleCommand(input);
     }
 
-    /**
-     * Returns a string wrapped with horizontal lines above and below for formatting.
-     * 
-     * @param str The string to format.
-     * @return The formatted string.
-     */
+
+    /** Returns a string wrapped between horizontal lines. */
     public String formattedString(String str) {
-        String line = "____________________________________________________________";
-        return String.format("%s\n%s\n%s\n", line, str, line);
+        return String.format("%s\n%s\n%s\n", LINE, str, LINE);
     }
 }
