@@ -20,8 +20,9 @@ public class Main extends Application {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
+            stage.setTitle("EGGY");
             stage.setScene(scene);
-            fxmlLoader.<MainWindow>getController().setEggy(eggy);  // inject the Duke instance
+            fxmlLoader.<MainWindow>getController().setEggy(eggy);  // inject the eggy instance
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
