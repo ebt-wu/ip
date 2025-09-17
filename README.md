@@ -14,7 +14,7 @@ Eggy Chatbot is a user-friendly personal assistant that helps organize and manag
 
 - **Add Event:**  
   Schedule events that occur at a specific time.  
-  Example: `event CS2100 Exam /at 2025-09-25 09:00`
+  Example: `event project meeting /from Mon 2pm /to 4pm`
 
 ## 📋 Viewing Tasks
 
@@ -48,7 +48,7 @@ Eggy Chatbot is a user-friendly personal assistant that helps organize and manag
 |----------------------------------------------|-----------------------------------------------------|
 | `todo Buy groceries`                         | Adds a new Todo task                                |
 | `deadline Submit report /by 2023-10-15T18:00`| Adds a Deadline with due date                       |
-| `event Team meeting /at 2025-09-18 14:00`    | Adds an Event at specific time                      |
+| `event project meeting /from Mon 2pm /to 4pm`| Adds an Event at specific time                      |
 | `list`                                       | Lists all tasks                                     |
 | `mark 2`                                     | Marks task 2 as completed                           |
 | `delete 5`                                   | Deletes task 5 from the list                        |
