@@ -57,4 +57,4 @@ Eggy Chatbot is a user-friendly personal assistant that helps organize and manag
 
 ---
 
-Eggy Chatbot is designed to be simple, robust, and extensible—making it easy to manage tasks directly from your command line or IDE. For feedback or suggestions, feel free to contribute or open an issue!
+Eggy Chatbot is designed to be simple, robust, and extensible—making it easy to manage tasks. For feedback or suggestions, feel free to contribute or open an issue!
