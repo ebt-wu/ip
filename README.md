@@ -1,3 +1,4 @@
+# EGGY
 # Features of Eggy Chatbot
 
 Eggy Chatbot is a user-friendly personal assistant that helps organize and manage your daily tasks efficiently. Below are the main features currently supported:
