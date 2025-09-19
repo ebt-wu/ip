@@ -14,7 +14,7 @@ import eggy.TaskList;
 public class Ui {
     // Constants for formatting output
     private static final String LINE = "____________________________________________________________";
-    private static final String WELCOME_MSG = "Hello! I'm EGGY\nWhat can I do for you?";
+    private static final String WELCOME_MSG = "Hey there! 👋 Welcome to Eggy — your friendly task assistant.\nWhat can I do for you today?";
     private static final String GOODBYE_MSG = "Bye. Hope to see you again soon!";
     private static final String ADD_TASK_MSG = "Got it. I've added this task:\n";
     private static final String REMOVE_TASK_MSG = "Noted. I've removed this task:\n";
@@ -26,8 +26,9 @@ public class Ui {
 
     /**
      * Constructs the Ui.
+     * 
      * @param taskList the TaskList to operate on
-     * @param storage the Storage instance for persistent saving/loading
+     * @param storage  the Storage instance for persistent saving/loading
      */
     public Ui(TaskList taskList, Storage storage) {
         this.taskList = taskList;
@@ -99,8 +100,21 @@ public class Ui {
         showGoodbye();
     }
 
+    private String getCommandList() {
+        return "Try these commands:\n"
+                + "     todo <description>\n"
+                + "     deadline <description> /by <YYYY-MM-DDTHH:MM>\n"
+                + "     event <description> /from <time> /to <time>\n"
+                + "     list\n"
+                + "     mark <task-number>\n"
+                + "     unmark <task-number>\n"
+                + "     delete <task-number>\n"
+                + "     find <keyword>\n";
+    }
+
     /**
      * Processes a single user command and returns the corresponding message.
+     * 
      * @param input the user command
      * @return the display message
      * @throws Exception for invalid commands
@@ -112,8 +126,8 @@ public class Ui {
             boolean isMark = input.startsWith("mark ");
             taskList.handleMarkUnmark(input);
             return isMark
-                ? "Nice! I've marked this task as done:\n" + getFormattedTaskList()
-                : "OK, I've marked this task as not done yet:\n" + getFormattedTaskList();
+                    ? "Nice! I've marked this task as done:\n" + getFormattedTaskList()
+                    : "OK, I've marked this task as not done yet:\n" + getFormattedTaskList();
         } else if (input.startsWith("todo ")) {
             Task added = taskList.append(input, "todo");
             return ADD_TASK_MSG + "    " + added + "\nNow you have " + taskList.size() + " tasks in the list";
@@ -133,13 +147,17 @@ public class Ui {
             List<Task> found = taskList.findTasks(keyword);
             return "Here are the matching tasks in your list:\n" + formatTaskList(found);
         } else {
-            throw new Exception("OOPS!!! I'm sorry, but I don't know what that means :-(");
+            throw new Exception(
+                    "I'm sorry, but I don't know what that means :-("
+                            + "\n" + getCommandList());
         }
+
     }
 
     /**
      * Processes a single user command and returns the corresponding message.
      * This method is designed for integration with GUI applications.
+     * 
      * @param input the user command
      * @return the display message
      * @throws Exception for invalid commands
@@ -147,7 +165,6 @@ public class Ui {
     public String getResponse(String input) throws Exception {
         return handleCommand(input);
     }
-
 
     /** Returns a string wrapped between horizontal lines. */
     public String formattedString(String str) {

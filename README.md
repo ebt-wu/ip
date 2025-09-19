@@ -1,4 +1,5 @@
 # EGGY
+
 # Features of Eggy Chatbot
 
 Eggy Chatbot is a user-friendly personal assistant that helps organize and manage your daily tasks efficiently. Below are the main features currently supported:
@@ -11,7 +12,7 @@ Eggy Chatbot is a user-friendly personal assistant that helps organize and manag
 
 - **Add Deadline:**  
   Add tasks that have a specific due date and time.  
-  Example: `deadline Submit AI project /by 2025-09-20 23:59`
+  Example: `deadline Submit report /by 2023-10-15T18:00`
 
 - **Add Event:**  
   Schedule events that occur at a specific time.  
@@ -40,20 +41,19 @@ Eggy Chatbot is a user-friendly personal assistant that helps organize and manag
 ## 🗂️ Sorting
 
 - **Sort Deadlines by Date:**  
-  Eggy can sort and show all deadline tasks ordered chronologically by their due date for better prioritization.  
-  
+  Eggy can sort and show all deadline tasks ordered chronologically by their due date for better prioritization.
 
 ## ❌ Command Examples
 
-| Command                                      | Description                                         |
-|----------------------------------------------|-----------------------------------------------------|
-| `todo Buy groceries`                         | Adds a new Todo task                                |
-| `deadline Submit report /by 2023-10-15T18:00`| Adds a Deadline with due date                       |
-| `event project meeting /from Mon 2pm /to 4pm`| Adds an Event at specific time                      |
-| `list`                                       | Lists all tasks                                     |
-| `mark 2`                                     | Marks task 2 as completed                           |
-| `delete 5`                                   | Deletes task 5 from the list                        |
-| `unmark 2`                                   | Unmark the second task on the list                  |
+| Command                                       | Description                        |
+| --------------------------------------------- | ---------------------------------- |
+| `todo Buy groceries`                          | Adds a new Todo task               |
+| `deadline Submit report /by 2023-10-15T18:00` | Adds a Deadline with due date      |
+| `event project meeting /from Mon 2pm /to 4pm` | Adds an Event at specific time     |
+| `list`                                        | Lists all tasks                    |
+| `mark 2`                                      | Marks task 2 as completed          |
+| `delete 5`                                    | Deletes task 5 from the list       |
+| `unmark 2`                                    | Unmark the second task on the list |
 
 ---
 

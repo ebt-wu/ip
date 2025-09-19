@@ -26,6 +26,7 @@ public class MainWindow extends AnchorPane {
 
     @FXML
     public void initialize() {
+        dialogContainer.getChildren().add(DialogBox.getDukeDialog("Hey there! Welcome to Eggy — your friendly task assistant.\n\n Type anything to get the list of supported commands", dukeImage));
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
