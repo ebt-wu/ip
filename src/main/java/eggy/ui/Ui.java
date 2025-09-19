@@ -14,7 +14,7 @@ import eggy.TaskList;
 public class Ui {
     // Constants for formatting output
     private static final String LINE = "____________________________________________________________";
-    private static final String WELCOME_MSG = "Hey there! 👋 Welcome to Eggy — your friendly task assistant.\nWhat can I do for you today?";
+    private static final String WELCOME_MSG = "Hey there! Welcome to Eggy — your friendly task assistant.\nWhat can I do for you today?";
     private static final String GOODBYE_MSG = "Bye. Hope to see you again soon!";
     private static final String ADD_TASK_MSG = "Got it. I've added this task:\n";
     private static final String REMOVE_TASK_MSG = "Noted. I've removed this task:\n";
